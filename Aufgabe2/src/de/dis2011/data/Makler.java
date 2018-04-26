@@ -76,7 +76,7 @@ public class Makler {
 			Connection con = DB2ConnectionManager.getInstance().getConnection();
 
 			// Erzeuge Anfrage
-			String selectSQL = "SELECT * FROM ESTATE_AGENT WHERE AGENT_ID = ?";
+			String selectSQL = "SELECT * FROM makler WHERE id = ?";
 			PreparedStatement pstmt = con.prepareStatement(selectSQL);
 			pstmt.setInt(1, id);
 
@@ -85,10 +85,10 @@ public class Makler {
 			if (rs.next()) {
 				Makler ts = new Makler();
 				ts.setId(id);
-				ts.setName(rs.getString("AGENT_NAME"));
-				ts.setAddress(rs.getString("AGENT_ADDRESS"));
-				ts.setLogin(rs.getString("LOGIN"));
-				ts.setPassword(rs.getString("PASSWORD"));
+				ts.setName(rs.getString("name"));
+				ts.setAddress(rs.getString("address"));
+				ts.setLogin(rs.getString("login"));
+				ts.setPassword(rs.getString("password"));
 
 				rs.close();
 				pstmt.close();
@@ -113,7 +113,7 @@ public class Makler {
 			if (getId() == -1) {
 				// Achtung, hier wird noch ein Parameter mitgegeben,
 				// damit spC$ter generierte IDs zurC<ckgeliefert werden!
-				String insertSQL = "INSERT INTO ESTATE_AGENT(AGENT_NAME, AGENT_ADDRESS, LOGIN, PASSWORD) VALUES (?, ?, ?, ?)";
+				String insertSQL = "INSERT INTO makler(name, address, login, password) VALUES (?, ?, ?, ?)";
 
 				PreparedStatement pstmt = con.prepareStatement(insertSQL,
 						Statement.RETURN_GENERATED_KEYS);
@@ -135,7 +135,7 @@ public class Makler {
 				pstmt.close();
 			} else {
 				// Falls schon eine ID vorhanden ist, mache ein Update...
-				String updateSQL = "UPDATE ESTATE_AGENT SET AGENT_NAME = ?, AGENT_ADDRESS = ?, LOGIN = ?, PASSWORD = ? WHERE USER_ID = ?";
+				String updateSQL = "UPDATE makler SET name = ?, address = ?, login = ?, password = ? WHERE id = ?";
 				PreparedStatement pstmt = con.prepareStatement(updateSQL);
 
 				// Setze Anfrage Parameter
