@@ -21,6 +21,7 @@ public class Kaufvertrag {
 	private float rate;
 	private int house_ID;
 	private int person_ID;
+	
 
 	/**
 	 * getVertragnr von dem Vertrag
