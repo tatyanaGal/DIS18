@@ -199,7 +199,7 @@ public class Main {
 				newEstate(makler);
 				break;
 			case UPDATE:
-				esateUpdate(makler);
+				estateUpdate(makler);
 				break;
 			case DELETE:
 				estateDelete(makler);
@@ -315,7 +315,7 @@ public class Main {
 				System.out.println("Die von Ihnen eingegebene ID ist ungültig!");
 			}
 		} catch (NullPointerException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
 		}
 	}
@@ -475,7 +475,7 @@ public class Main {
 				System.out.println("Ihre Eingabe war falsch! Versuchen Sie es erneut!");
 			}
 		} catch (NullPointerException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
 		}
 	}
@@ -549,10 +549,10 @@ public class Main {
 				}
 
 			} else if (answer.toLowerCase().equals(str2.toLowerCase())) {
-				id = FormUtil.readInt("Bei welchem Haus möchten Sie Änderungen vornehmen? Geben Sie bitte eine ID ein");
+				id = FormUtil.readInt("Welches Haus möchten Sie löschen? Geben Sie bitte eine ID ein");
 
 				// Check, ob die WOhnung dem Makler gehört
-				if (Wohnung.loadOneApartment(id).getAgent() == makler.getId()) {
+				if (Haus.loadOneHouse(id).getAgent() == makler.getId()) {
 					Haus house = new Haus();
 					house = Haus.loadOneHouse(id);
 					house.delete();
@@ -564,7 +564,7 @@ public class Main {
 				System.out.println("Bitte geben Sie entweder 'Haus' oder 'Wohnung' ein!");
 			}
 		} catch (NullPointerException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
 		}
 	}
@@ -574,7 +574,7 @@ public class Main {
 	 * 
 	 * @param makler
 	 */
-	public static void esateUpdate(Makler m) {
+	public static void estateUpdate(Makler m) {
 
 		Makler makler = m;
 		String answer = "";
@@ -644,29 +644,24 @@ public class Main {
 						apartment.setRooms(answerInt);
 					}
 
-					answer = FormUtil.readString("Balcony (1/0)");
-					if (!answer.isEmpty()) {
-						answerInt = Integer.parseInt(answer);
+					answerInt = FormUtil.readInt("Balcony (1/0)");
 
-						// Check, ob 1 oder 0 eingegeben wurd
-						while (answerInt != 0 && answerInt != 1) {
-							System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
-							answer = FormUtil.readString("Balcony (1/0)");
-						}
-						apartment.setBalcony(answerInt);
+					// Check, ob 1 oder 0 eingegeben wurd
+					while ((answerInt != 0) && (answerInt != 1)) {
+						System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
+						answerInt = FormUtil.readInt("Balcony (1/0)");
 					}
+					apartment.setBalcony(answerInt);
 
-					answer = FormUtil.readString("Kitchen (1/0)");
-					if (!answer.isEmpty()) {
-						answerInt = Integer.parseInt(answer);
+					answerInt = FormUtil.readInt("Kitchen (1/0)");
 
-						// Check, ob 1 oder 0 eingegeben wurd
-						while (answerInt != 0 && answerInt != 1) {
-							System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
-							answer = FormUtil.readString("Kitchen (1/0)");
-						}
-						apartment.setKitchen(answerInt);
+					// Check, ob 1 oder 0 eingegeben wurd
+					while ((answerInt != 0) && (answerInt != 1)) {
+						System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
+						answerInt = FormUtil.readInt("Kitchen (1/0)");
 					}
+					apartment.setKitchen(answerInt);
+
 					apartment.save();
 
 					System.out.println("\n Die Daten wurden erfolgreich geändert! \n City: " + apartment.getCity()
@@ -728,17 +723,15 @@ public class Main {
 						house.setPrice(answer);
 					}
 
-					answer = FormUtil.readString("Garden (1/0)");
-					if (!answer.isEmpty()) {
-						answerInt = Integer.parseInt(answer);
+					answerInt = FormUtil.readInt("Garden (1/0)");
 
-						// Check, ob 1 oder 0 eingegeben wurd
-						while (answerInt != 0 && answerInt != 1) {
-							System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
-							answer = FormUtil.readString("Garden (1/0)");
-						}
-						house.setGarden(answerInt);
+					// Check, ob 1 oder 0 eingegeben wurd
+					while ((answerInt != 0) && (answerInt != 1)) {
+						System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
+						answerInt = FormUtil.readInt("Garden (1/0)");
 					}
+					house.setGarden(answerInt);
+
 					house.save();
 
 					System.out.println("\n Die Daten wurden erfolgreich geändert! \n City: " + house.getCity()
@@ -753,7 +746,7 @@ public class Main {
 				System.out.println("Ihre Eingabe ist falsch! Versuchen SIe es erneut!");
 			}
 		} catch (NullPointerException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
 		}
 
@@ -817,31 +810,24 @@ public class Main {
 
 				apartment.setRooms(FormUtil.readInt("Rooms"));
 
-				answer = FormUtil
-						.readString("Balcony (1/0). Wenn Sie nichts eingeben, wird als Default eine 0 übernommen");
-				if (!answer.isEmpty()) {
-					answerInt = Integer.parseInt(answer);
+				answerInt = FormUtil.readInt("Balcony (1/0)");
 
-					// Check, ob 1 oder 0 eingegeben wurd
-					while (answerInt != 0 && answerInt != 1) {
-						System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
-						answer = FormUtil.readString("Balcony (1/0)");
-					}
-					apartment.setBalcony(answerInt);
+				// Check, ob 1 oder 0 eingegeben wurd
+				while ((answerInt != 0) && (answerInt != 1)) {
+					System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
+					answerInt = FormUtil.readInt("Balcony (1/0)");
 				}
+				apartment.setBalcony(answerInt);
 
-				answer = FormUtil
-						.readString("Kitchen (1/0). Wenn Sie nichts eingeben, wird als Default eine 0 übernommen");
-				if (!answer.isEmpty()) {
-					answerInt = Integer.parseInt(answer);
+				answerInt = FormUtil.readInt("Kitchen (1/0)");
 
-					// Check, ob 1 oder 0 eingegeben wurd
-					while (answerInt != 0 && answerInt != 1) {
-						System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
-						answer = FormUtil.readString("Kitchen (1/0)");
-					}
-					apartment.setKitchen(answerInt);
+				// Check, ob 1 oder 0 eingegeben wurd
+				while ((answerInt != 0) && (answerInt != 1)) {
+					System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
+					answerInt = FormUtil.readInt("Kitchen (1/0)");
 				}
+				apartment.setKitchen(answerInt);
+
 				apartment.save();
 
 				System.out.println("Eine Wohnung mit der ID " + apartment.getId() + " wurde erfolgreich erstellt!");
@@ -890,18 +876,14 @@ public class Main {
 				}
 				house.setPrice(answer);
 
-				answer = FormUtil
-						.readString("Garden (1/0). Wenn Sie nichts eingeben, wird als Default eine 0 übernommen");
-				if (!answer.isEmpty()) {
-					answerInt = Integer.parseInt(answer);
+				answerInt = FormUtil.readInt("Garden (1/0)");
 
-					// Check, ob 1 oder 0 eingegeben wurd
-					while (answerInt != 0 && answerInt != 1) {
-						System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
-						answer = FormUtil.readString("Garden (1/0)");
-					}
-					house.setGarden(answerInt);
+				// Check, ob 1 oder 0 eingegeben wurd
+				while ((answerInt != 0) && (answerInt != 1)) {
+					System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
+					answerInt = FormUtil.readInt("Garden (1/0)");
 				}
+				house.setGarden(answerInt);
 				house.save();
 
 				System.out.println("Ein Haus mit der ID " + house.getId() + " wurde erfolgreich erstellt!");
@@ -909,7 +891,7 @@ public class Main {
 				System.out.println("Die Eingabe war falsch! Bitte versuchen Sie es erneut!");
 			}
 		} catch (NullPointerException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
 		}
 	}
@@ -1041,7 +1023,7 @@ public class Main {
 			showMaklerVerwaltungMenu(makler);
 
 		} catch (NullPointerException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			System.out.println("Das Passwort und das Login sind nicht korrekt! Versuchen Sie erneut!");
 		}
 	}
