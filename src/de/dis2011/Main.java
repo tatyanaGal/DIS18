@@ -396,7 +396,7 @@ public class Main {
 				id = FormUtil
 						.readInt("Für welche Wohnung möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
 
-				while (Wohnung.loadOneApartment(id).getAgent() == makler.getId()) {
+				while (Wohnung.loadOneApartment(id).getAgent() != makler.getId()) {
 					System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut! \n");
 					id = FormUtil.readInt(
 							"Für welche Wohnung möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
@@ -440,7 +440,7 @@ public class Main {
 				id = FormUtil
 						.readInt("Für welches Haus möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
 
-				while (Haus.loadOneHouse(id).getAgent() == makler.getId()) {
+				while (Haus.loadOneHouse(id).getAgent() != makler.getId()) {
 					System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut! \n");
 					id = FormUtil.readInt(
 							"Für welches Haus möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
