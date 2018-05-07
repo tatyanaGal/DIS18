@@ -10,7 +10,7 @@ import de.dis2011.data.Haus;
 import de.dis2011.data.Wohnung;
 
 /**
- * Hauptklasse
+ * Hauptklasse sss
  */
 public class Main {
 	/**
