@@ -220,4 +220,39 @@ public class Makler {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * Lädt den Makler aus der DB anhand der Login
+	 * @param answer
+	 * @return  Makler
+	 */
+	public static Makler loadWithLog(String login) {
+		try {
+			// Hole Verbindung
+			Connection con = DB2ConnectionManager.getInstance().getConnection();
+
+			// Erzeuge Anfrage
+			String selectSQL = "SELECT * FROM ESTATE_AGENT WHERE Login = ?";
+			PreparedStatement pstmt = con.prepareStatement(selectSQL);
+			pstmt.setString(1, login);
+
+			// Führe Anfrage aus
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				Makler ts = new Makler();
+				ts.setId(rs.getInt("Agent_Id"));
+				ts.setName(rs.getString("AGENT_NAME"));
+				ts.setAddress(rs.getString("AGENT_ADDRESS"));
+				ts.setLogin(login);
+				ts.setPassword(rs.getString("PASSWORD"));
+
+				rs.close();
+				pstmt.close();
+				return ts;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

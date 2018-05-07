@@ -423,8 +423,6 @@ public class Main {
 				tenancy.setPlace(answer);
 
 				// Check, ob das Vertragsdatum später als Startdatum ist
-				datumStart = Date.valueOf(FormUtil.readString("Start date (YYYY-MM-DD)"));
-
 				answer = FormUtil.readString("Start date (YYYY-MM-DD)");
 				// CHeck, ob die EIngabe leer ist
 				while (answer.isEmpty()) {
@@ -488,7 +486,7 @@ public class Main {
 				answer = FormUtil.readString("Date (YYYY-MM-DD)");
 				// CHeck, ob die EIngabe leer ist
 				while (answer.isEmpty()) {
-					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
 					answer = FormUtil.readString("Date (YYYY-MM-DD)");
 				}
 				purchase.setDate(Date.valueOf(answer));
@@ -496,7 +494,7 @@ public class Main {
 				answer = FormUtil.readString("Place");
 				// CHeck, ob die EIngabe leer ist
 				while (answer.isEmpty()) {
-					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
 					answer = FormUtil.readString("Place");
 				}
 				purchase.setPlace(answer);
@@ -504,9 +502,13 @@ public class Main {
 				purchase.setInstallmentsnr(FormUtil.readInt("Installments number"));
 
 				answer = FormUtil.readString("Rate (XX.XX)");
-				// CHeck, ob die EIngabe leer ist
+				// CHeck, ob die Eingabe leer ist
 				while (answer.isEmpty()) {
-					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
+					answer = FormUtil.readString("Rate (XX,XX)");
+				}
+				while (Float.valueOf(answer)>=100 || Float.valueOf(answer)<0) {
+					System.out.println("Der Zinssatz muss zwischen 0 und 100 liegen! Bitte versuchen Sie es erneut!");
 					answer = FormUtil.readString("Rate (XX,XX)");
 				}
 				purchase.setRate(Float.valueOf(answer));
@@ -1118,6 +1120,11 @@ public class Main {
 			System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
 			answer = FormUtil.readString("Login");
 		}
+		// CHeck, ob login schon verwendet wird
+		while (Makler.loadWithLog(answer) != null) {
+			System.out.println("Das Login wird bereits benutzt! Bitte versuchen Sie es erneut!");
+			answer = FormUtil.readString("Login");
+		}
 		m.setLogin(answer);
 
 		answer = FormUtil.readString("Passwort");
@@ -1131,5 +1138,6 @@ public class Main {
 		m.save();
 
 		System.out.println("Makler mit der ID " + m.getId() + " wurde erzeugt. \n");
+
 	}
 }
