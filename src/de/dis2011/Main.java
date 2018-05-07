@@ -500,7 +500,7 @@ public class Main {
 
 				purchase.setInstallmentsnr(FormUtil.readInt("Installments number"));
 
-				answer = FormUtil.readString("Rate (XX,XX)");
+				answer = FormUtil.readString("Rate (XX.XX)");
 				// CHeck, ob die EIngabe leer ist
 				while (answer.isEmpty()) {
 					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
@@ -530,6 +530,10 @@ public class Main {
 		} catch (NullPointerException e) {
 			// e.printStackTrace();
 			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
+		}
+		catch (IllegalArgumentException e) {
+			System.out.println("Die Eingabe liegt in falscher Format vor! Bitte versuchen Sie es erneut!");
+			
 		}
 	}
 

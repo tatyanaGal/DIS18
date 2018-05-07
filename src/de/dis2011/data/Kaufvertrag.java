@@ -192,7 +192,7 @@ public class Kaufvertrag {
 				pstmt.close();
 			} else {
 				// Falls schon eine ID vorhanden ist, mache ein Update...
-				String updateSQL = "UPDATE Purchase SET Purchase_Date = ?, Purchase_Place = ?, Start = ?, Duration = ?, Addcosts = ?, House_ID = ?, Person_ID = ? WHERE Purchase_Contractnr = ?";
+				String updateSQL = "UPDATE Purchase SET Purchase_Date = ?, Purchase_Place = ?, Installmentsnr = ?, Rate = ?, House_ID = ?, Person_ID = ? WHERE Purchase_Contractnr = ?";
 				PreparedStatement pstmt = con.prepareStatement(updateSQL);
 
 				// Setze Anfrage Parameter
@@ -202,7 +202,7 @@ public class Kaufvertrag {
 				pstmt.setFloat(4, getRate());
 				pstmt.setInt(5, getHouse_ID());
 				pstmt.setInt(6, getPerson_ID());
-				pstmt.setInt(8, getContractnr());
+				pstmt.setInt(7, getContractnr());
 				pstmt.executeUpdate();
 
 				pstmt.close();
