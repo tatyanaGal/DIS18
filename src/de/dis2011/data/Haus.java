@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Haus-Bean
  * 
- * Test Mario
+ * Test Mario Push
  * 
  * Beispiel-Tabelle: CREATE TABLE House(House_ID int NOT NULL GENERATED ALWAYS
  * AS IDENTITY (START WITH 1, INCREMENT BY 1, NO CACHE) PRIMARY KEY, House_City
