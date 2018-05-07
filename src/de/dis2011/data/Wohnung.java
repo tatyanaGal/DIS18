@@ -380,7 +380,7 @@ public class Wohnung {
 		try {
 
 			//
-			String deleteSQL = "DELETE FROM HOUSE WHERE Apartment_City = ? AND Apartment_Postcode = ? AND Apartment_Street = ? AND Apartment_Streetnr = ? AND Apartment_Square = ? AND Floor = ? AND Rent = ? AND Rooms = ? AND Balcony = ? AND Kitchen = ? AND Agent_ID = ? AND APARTMENT_ID = ?";
+			String deleteSQL = "DELETE FROM Apartment WHERE Apartment_City = ? AND Apartment_Postcode = ? AND Apartment_Street = ? AND Apartment_Streetnr = ? AND Apartment_Square = ? AND Floor = ? AND Rent = ? AND Rooms = ? AND Balcony = ? AND Kitchen = ? AND Agent_ID = ? AND APARTMENT_ID = ?";
 			PreparedStatement pstmt = con.prepareStatement(deleteSQL);
 
 			// Setze Anfrage Parameter

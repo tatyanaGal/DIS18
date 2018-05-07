@@ -286,33 +286,38 @@ public class Main {
 		answerInt = FormUtil
 				.readInt("Welche Personendaten möchten Sie ändern? Geben Sie bitte eine ID  von der Person ein");
 
-		person = Person.load(answerInt);
-		if (person != null) {
-			System.out.println(
-					"Um Die Daten zu ändern, fügen Sie die notwendigen Daten in folgenden Feldern ein. Wenn Sie ein Feld leer lassen, werden die Daten nicht geändert");
+		try {
+			person = Person.load(answerInt);
+			if (person != null) {
+				System.out.println(
+						"Um Die Daten zu ändern, fügen Sie die notwendigen Daten in folgenden Feldern ein. Wenn Sie ein Feld leer lassen, werden die Daten nicht geändert");
 
-			answer = FormUtil.readString("Firstname");
-			if (!answer.isEmpty()) {
-				person.setFirstname(answer);
+				answer = FormUtil.readString("Firstname");
+				if (!answer.isEmpty()) {
+					person.setFirstname(answer);
+				}
+
+				answer = FormUtil.readString("Lastname");
+				if (!answer.isEmpty()) {
+					person.setLastname(answer);
+				}
+
+				answer = FormUtil.readString("Address");
+				if (!answer.isEmpty()) {
+					person.setAddress(answer);
+				}
+
+				person.save();
+
+				System.out.println("\n Die Daten wurden erfolgreich geändert! \n Firstname: " + person.getFirstname()
+						+ "\n Lastname: " + person.getLastname() + "\n Address: " + person.getAddress() + "\n\n");
+
+			} else {
+				System.out.println("Die von Ihnen eingegebene ID ist ungültig!");
 			}
-
-			answer = FormUtil.readString("Lastname");
-			if (!answer.isEmpty()) {
-				person.setLastname(answer);
-			}
-
-			answer = FormUtil.readString("Address");
-			if (!answer.isEmpty()) {
-				person.setAddress(answer);
-			}
-
-			person.save();
-
-			System.out.println("\n Die Daten wurden erfolgreich geändert! \n Firstname: " + person.getFirstname()
-					+ "\n Lastname: " + person.getLastname() + "\n Address: " + person.getAddress() + "\n\n");
-
-		} else {
-			System.out.println("Die von Ihnen eingegebene ID ist ungültig!");
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
 		}
 	}
 
@@ -382,90 +387,97 @@ public class Main {
 					+ persons.get(i).getLastname() + " " + persons.get(i).getAddress() + "  \n");
 		}
 
-		answer = FormUtil.readString("Mietvertrag/Kaufvertrag erstellen?");
+		try {
+			answer = FormUtil.readString("Mietvertrag/Kaufvertrag erstellen?");
 
-		if (answer.toLowerCase().equals(str1.toLowerCase())) {
+			if (answer.toLowerCase().equals(str1.toLowerCase())) {
 
-			// Check, ob die Wohnung dem Makler gehört
-			id = FormUtil
-					.readInt("Für welche Wohnung möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
-
-			while (Wohnung.loadOneApartment(id).getAgent() == makler.getId()) {
-				System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut! \n");
+				// Check, ob die Wohnung dem Makler gehört
 				id = FormUtil
 						.readInt("Für welche Wohnung möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
-			}
-			tenancy.setApartment_ID(id);
 
-			datumContract = Date.valueOf(FormUtil.readString("Date (YYYY-MM-DD)"));
-			tenancy.setDate(datumContract);
-			tenancy.setPlace(FormUtil.readString("Place"));
+				while (Wohnung.loadOneApartment(id).getAgent() == makler.getId()) {
+					System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut! \n");
+					id = FormUtil.readInt(
+							"Für welche Wohnung möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
+				}
+				tenancy.setApartment_ID(id);
 
-			// Check, ob das Vertragsdatum später als Startdatum ist
-			datumStart = Date.valueOf(FormUtil.readString("Start date (YYYY-MM-DD)"));
+				datumContract = Date.valueOf(FormUtil.readString("Date (YYYY-MM-DD)"));
+				tenancy.setDate(datumContract);
+				tenancy.setPlace(FormUtil.readString("Place"));
 
-			while (datumContract.after(datumStart)) {
-				System.out.println(
-						"Das von Ihnen eingegebene Datum ist inkorrekt! Das Startdatum kann nicht vor dem Vertragsdatum liegen. Versuchen Sie es erneut! \n");
+				// Check, ob das Vertragsdatum später als Startdatum ist
 				datumStart = Date.valueOf(FormUtil.readString("Start date (YYYY-MM-DD)"));
-			}
-			tenancy.setStartdate(datumStart);
-			tenancy.setDuration(FormUtil.readString("Duration"));
-			tenancy.setAddcosts(FormUtil.readString("Addcosts"));
 
-			// Check, ob die Person existiert
-			id = FormUtil.readInt("Person ID");
-			while (Person.load(id) == null) {
-				System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen SIe es erneut! \n");
+				while (datumContract.after(datumStart)) {
+					System.out.println(
+							"Das von Ihnen eingegebene Datum ist inkorrekt! Das Startdatum kann nicht vor dem Vertragsdatum liegen. Versuchen Sie es erneut! \n");
+					datumStart = Date.valueOf(FormUtil.readString("Start date (YYYY-MM-DD)"));
+				}
+				tenancy.setStartdate(datumStart);
+				tenancy.setDuration(FormUtil.readString("Duration"));
+				tenancy.setAddcosts(FormUtil.readString("Addcosts"));
+
+				// Check, ob die Person existiert
 				id = FormUtil.readInt("Person ID");
-			}
+				while (Person.load(id) == null) {
+					System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen SIe es erneut! \n");
+					id = FormUtil.readInt("Person ID");
+				}
 
-			tenancy.setPerson_ID(id);
-			tenancy.save();
+				tenancy.setPerson_ID(id);
+				tenancy.save();
 
-			System.out.println(
-					"Ein Mietvertrag mit der Nummer " + tenancy.getContractnr() + " wurde erfolgreich erstellt!");
-			// showMainMenu();
-			// TODO
-		} else if (answer.toLowerCase().equals(str2.toLowerCase())) {
+				System.out.println(
+						"Ein Mietvertrag mit der Nummer " + tenancy.getContractnr() + " wurde erfolgreich erstellt!");
+				// showMainMenu();
+				// TODO
+			} else if (answer.toLowerCase().equals(str2.toLowerCase())) {
 
-			id = FormUtil.readInt("Für welches Haus möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
-			Kaufvertrag purchase = new Kaufvertrag();
-
-			// Check, ob das Haus dem Makler gehört
-
-			id = FormUtil.readInt("Für welches Haus möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
-
-			while (Haus.loadOneHouse(id).getAgent() == makler.getId()) {
-				System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut! \n");
 				id = FormUtil
 						.readInt("Für welches Haus möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
-			}
-			purchase.setHouse_ID(id);
+				Kaufvertrag purchase = new Kaufvertrag();
 
-			purchase.setDate(Date.valueOf(FormUtil.readString("Date (YYYY-MM-DD)")));
-			purchase.setPlace(FormUtil.readString("Place"));
-			purchase.setInstallmentsnr(FormUtil.readInt("Installments number"));
-			purchase.setRate(Float.valueOf(FormUtil.readString("Rate (XX,XX)")));
+				// Check, ob das Haus dem Makler gehört
 
-			purchase.setHouse_ID(id);
+				id = FormUtil
+						.readInt("Für welches Haus möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
 
-			// Check, ob die Person existiert
-			id = FormUtil.readInt("Person ID");
-			while (Person.load(id) == null) {
-				System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen SIe es erneut! \n");
+				while (Haus.loadOneHouse(id).getAgent() == makler.getId()) {
+					System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut! \n");
+					id = FormUtil.readInt(
+							"Für welches Haus möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
+				}
+				purchase.setHouse_ID(id);
+
+				purchase.setDate(Date.valueOf(FormUtil.readString("Date (YYYY-MM-DD)")));
+				purchase.setPlace(FormUtil.readString("Place"));
+				purchase.setInstallmentsnr(FormUtil.readInt("Installments number"));
+				purchase.setRate(Float.valueOf(FormUtil.readString("Rate (XX,XX)")));
+
+				purchase.setHouse_ID(id);
+
+				// Check, ob die Person existiert
 				id = FormUtil.readInt("Person ID");
+				while (Person.load(id) == null) {
+					System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen SIe es erneut! \n");
+					id = FormUtil.readInt("Person ID");
+				}
+				purchase.setPerson_ID(id);
+				purchase.save();
+
+				System.out.println(
+						"Ein Kaufvertrag mit der Nummer " + purchase.getContractnr() + " wurde erfolgreich erstellt!");
+				// showMainMenu();
+				// TODO
+
+			} else {
+				System.out.println("Ihre Eingabe war falsch! Versuchen Sie es erneut!");
 			}
-			purchase.setPerson_ID(id);
-			purchase.save();
-
-			System.out.println(
-					"Ein Kaufvertrag mit der Nummer " + purchase.getContractnr() + " wurde erfolgreich erstellt!");
-			// showMainMenu();
-			// TODO
-
-		} else {
-			System.out.println("Ihre Eingabe war falsch! Versuchen Sie es erneut!");
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
 		}
 	}
 
@@ -521,35 +533,40 @@ public class Main {
 		System.out.println("Hier sind Ihre Immobilien aufgelistet\n");
 		loadEstates(makler);
 
-		answer = FormUtil.readString("Was möchten Sie löschen? (Wohnung/Haus)");
-		// Check, ob ein richtiges Wort eingegeben wurde
-		if (answer.toLowerCase().equals(str1.toLowerCase())) {
-			id = FormUtil.readInt("Welche Wohnung möchten Sie löschen? Geben Sie bitte eine ID ein");
+		try {
+			answer = FormUtil.readString("Was möchten Sie löschen? (Wohnung/Haus)");
+			// Check, ob ein richtiges Wort eingegeben wurde
+			if (answer.toLowerCase().equals(str1.toLowerCase())) {
+				id = FormUtil.readInt("Welche Wohnung möchten Sie löschen? Geben Sie bitte eine ID ein");
 
-			// Check, ob die WOhnung dem Makler gehört
-			if (Wohnung.loadOneApartment(id).getAgent() == makler.getId()) {
-				Wohnung apartment = new Wohnung();
-				apartment = Wohnung.loadOneApartment(id);
-				apartment.delete();
-				System.out.println("Die Wohnung wurde erfolgreich gelöscht!");
+				// Check, ob die WOhnung dem Makler gehört
+				if (Wohnung.loadOneApartment(id).getAgent() == makler.getId()) {
+					Wohnung apartment = new Wohnung();
+					apartment = Wohnung.loadOneApartment(id);
+					apartment.delete();
+					System.out.println("Die Wohnung wurde erfolgreich gelöscht!");
+				} else {
+					System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut!");
+				}
+
+			} else if (answer.toLowerCase().equals(str2.toLowerCase())) {
+				id = FormUtil.readInt("Bei welchem Haus möchten Sie Änderungen vornehmen? Geben Sie bitte eine ID ein");
+
+				// Check, ob die WOhnung dem Makler gehört
+				if (Wohnung.loadOneApartment(id).getAgent() == makler.getId()) {
+					Haus house = new Haus();
+					house = Haus.loadOneHouse(id);
+					house.delete();
+					System.out.println("Das Haus wurde erfolgreich gelöscht!");
+				} else {
+					System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut!");
+				}
 			} else {
-				System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut!");
+				System.out.println("Bitte geben Sie entweder 'Haus' oder 'Wohnung' ein!");
 			}
-
-		} else if (answer.toLowerCase().equals(str2.toLowerCase())) {
-			id = FormUtil.readInt("Bei welchem Haus möchten Sie Änderungen vornehmen? Geben Sie bitte eine ID ein");
-
-			// Check, ob die WOhnung dem Makler gehört
-			if (Wohnung.loadOneApartment(id).getAgent() == makler.getId()) {
-				Haus house = new Haus();
-				house = Haus.loadOneHouse(id);
-				house.delete();
-				System.out.println("Das Haus wurde erfolgreich gelöscht!");
-			} else {
-				System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut!");
-			}
-		} else {
-			System.out.println("Bitte geben Sie entweder 'Haus' oder 'Wohnung' ein!");
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
 		}
 	}
 
@@ -570,169 +587,175 @@ public class Main {
 		System.out.println("Hier sind Ihre Immobilien aufgelistet\n");
 		loadEstates(makler);
 
-		answer = FormUtil.readString("Wo möchten Sie die Änderungen vornehmen? (Wohnung/Haus)");
-		if (answer.toLowerCase().equals(str1.toLowerCase())) {
+		try {
+			answer = FormUtil.readString("Wo möchten Sie die Änderungen vornehmen? (Wohnung/Haus)");
+			if (answer.toLowerCase().equals(str1.toLowerCase())) {
 
-			id = FormUtil.readInt("Bei welcher Wohnung möchten Sie Änderungen vornehmen? Geben Sie bitte eine ID ein");
+				id = FormUtil
+						.readInt("Bei welcher Wohnung möchten Sie Änderungen vornehmen? Geben Sie bitte eine ID ein");
 
-			// TODO Check, ob die WOhnung dem Makler gehört
-			if (Wohnung.loadOneApartment(id).getAgent() == makler.getId()) {
-				Wohnung apartment = new Wohnung();
-				apartment = Wohnung.loadOneApartment(id);
-				System.out.println(
-						"Um Ihre Daten zu dieser Wohnung zu ändern, fügen Sie die notwendigen Daten in folgenden Feldern ein. Wenn Sie ein Feld leer lassen, werden die Daten nicht geändert");
+				// TODO Check, ob die WOhnung dem Makler gehört
+				if (Wohnung.loadOneApartment(id).getAgent() == makler.getId()) {
+					Wohnung apartment = new Wohnung();
+					apartment = Wohnung.loadOneApartment(id);
+					System.out.println(
+							"Um Ihre Daten zu dieser Wohnung zu ändern, fügen Sie die notwendigen Daten in folgenden Feldern ein. Wenn Sie ein Feld leer lassen, werden die Daten nicht geändert");
 
-				answer = FormUtil.readString("City");
-				if (!answer.isEmpty()) {
-					apartment.setCity(answer);
-				}
-
-				answer = FormUtil.readString("Postcode");
-				if (!answer.isEmpty()) {
-					answerInt = Integer.parseInt(answer);
-					apartment.setPostcode(answerInt);
-				}
-
-				answer = FormUtil.readString("Street");
-				if (!answer.isEmpty()) {
-					apartment.setStreet(answer);
-				}
-
-				answer = FormUtil.readString("Street number");
-				if (!answer.isEmpty()) {
-					answerInt = Integer.parseInt(answer);
-					apartment.setStreetnr(answerInt);
-				}
-
-				answer = FormUtil.readString("Square");
-				if (!answer.isEmpty()) {
-					apartment.setSquare(answer);
-				}
-
-				answer = FormUtil.readString("Floor");
-				if (!answer.isEmpty()) {
-					answerInt = Integer.parseInt(answer);
-					apartment.setFloor(answerInt);
-				}
-
-				answer = FormUtil.readString("Rent");
-				if (!answer.isEmpty()) {
-					apartment.setRent(answer);
-				}
-
-				answer = FormUtil.readString("Rooms");
-				if (!answer.isEmpty()) {
-					answerInt = Integer.parseInt(answer);
-					apartment.setRooms(answerInt);
-				}
-
-				answer = FormUtil.readString("Balcony (1/0)");
-				if (!answer.isEmpty()) {
-					answerInt = Integer.parseInt(answer);
-
-					// Check, ob 1 oder 0 eingegeben wurd
-					while (answerInt != 0 && answerInt != 1) {
-						System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
-						answer = FormUtil.readString("Balcony (1/0)");
+					answer = FormUtil.readString("City");
+					if (!answer.isEmpty()) {
+						apartment.setCity(answer);
 					}
-					apartment.setBalcony(answerInt);
-				}
 
-				answer = FormUtil.readString("Kitchen (1/0)");
-				if (!answer.isEmpty()) {
-					answerInt = Integer.parseInt(answer);
-
-					// Check, ob 1 oder 0 eingegeben wurd
-					while (answerInt != 0 && answerInt != 1) {
-						System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
-						answer = FormUtil.readString("Kitchen (1/0)");
+					answer = FormUtil.readString("Postcode");
+					if (!answer.isEmpty()) {
+						answerInt = Integer.parseInt(answer);
+						apartment.setPostcode(answerInt);
 					}
-					apartment.setKitchen(answerInt);
-				}
-				apartment.save();
 
-				System.out.println("\n Die Daten wurden erfolgreich geändert! \n City: " + apartment.getCity()
-						+ "\n Postcode: " + apartment.getPostcode() + "\n Street: " + apartment.getStreet()
-						+ "\n Street number: " + apartment.getStreetnr() + "\n Square: " + apartment.getSquare()
-						+ "\n Floor number: " + apartment.getFloor() + "\n Rent: " + apartment.getRent() + "\n Rooms: "
-						+ apartment.getRooms() + "\n Balcony: " + toString(apartment.getBalcony()) + "\n Kitchen: "
-						+ toString(apartment.getKitchen()) + "\n\n");
+					answer = FormUtil.readString("Street");
+					if (!answer.isEmpty()) {
+						apartment.setStreet(answer);
+					}
+
+					answer = FormUtil.readString("Street number");
+					if (!answer.isEmpty()) {
+						answerInt = Integer.parseInt(answer);
+						apartment.setStreetnr(answerInt);
+					}
+
+					answer = FormUtil.readString("Square");
+					if (!answer.isEmpty()) {
+						apartment.setSquare(answer);
+					}
+
+					answer = FormUtil.readString("Floor");
+					if (!answer.isEmpty()) {
+						answerInt = Integer.parseInt(answer);
+						apartment.setFloor(answerInt);
+					}
+
+					answer = FormUtil.readString("Rent");
+					if (!answer.isEmpty()) {
+						apartment.setRent(answer);
+					}
+
+					answer = FormUtil.readString("Rooms");
+					if (!answer.isEmpty()) {
+						answerInt = Integer.parseInt(answer);
+						apartment.setRooms(answerInt);
+					}
+
+					answer = FormUtil.readString("Balcony (1/0)");
+					if (!answer.isEmpty()) {
+						answerInt = Integer.parseInt(answer);
+
+						// Check, ob 1 oder 0 eingegeben wurd
+						while (answerInt != 0 && answerInt != 1) {
+							System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
+							answer = FormUtil.readString("Balcony (1/0)");
+						}
+						apartment.setBalcony(answerInt);
+					}
+
+					answer = FormUtil.readString("Kitchen (1/0)");
+					if (!answer.isEmpty()) {
+						answerInt = Integer.parseInt(answer);
+
+						// Check, ob 1 oder 0 eingegeben wurd
+						while (answerInt != 0 && answerInt != 1) {
+							System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
+							answer = FormUtil.readString("Kitchen (1/0)");
+						}
+						apartment.setKitchen(answerInt);
+					}
+					apartment.save();
+
+					System.out.println("\n Die Daten wurden erfolgreich geändert! \n City: " + apartment.getCity()
+							+ "\n Postcode: " + apartment.getPostcode() + "\n Street: " + apartment.getStreet()
+							+ "\n Street number: " + apartment.getStreetnr() + "\n Square: " + apartment.getSquare()
+							+ "\n Floor number: " + apartment.getFloor() + "\n Rent: " + apartment.getRent()
+							+ "\n Rooms: " + apartment.getRooms() + "\n Balcony: " + toString(apartment.getBalcony())
+							+ "\n Kitchen: " + toString(apartment.getKitchen()) + "\n\n");
+				} else {
+					System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen SIe es erneut!");
+				}
+
+			} else if (answer.toLowerCase().equals(str2.toLowerCase())) {
+				id = FormUtil.readInt("Bei welchem Haus möchten Sie Änderungen vornehmen? Geben Sie bitte eine ID ein");
+
+				// Check, ob die Haus dem Makler gehört
+				if (Haus.loadOneHouse(id).getAgent() == makler.getId()) {
+					Haus house = new Haus();
+					house = Haus.loadOneHouse(id);
+
+					System.out.println(
+							"Um Ihre Daten zu diesem Haus zu ändern, fügen Sie die notwendigen Daten in folgenden Feldern ein. Wenn Sie ein Feld leer lassen, werden die Daten nicht geändert");
+
+					answer = FormUtil.readString("City");
+					if (!answer.isEmpty()) {
+						house.setCity(answer);
+					}
+
+					answer = FormUtil.readString("Postcode");
+					if (!answer.isEmpty()) {
+						answerInt = Integer.parseInt(answer);
+						house.setPostcode(answerInt);
+					}
+
+					answer = FormUtil.readString("Street");
+					if (!answer.isEmpty()) {
+						house.setStreet(answer);
+					}
+
+					answer = FormUtil.readString("Street number");
+					if (!answer.isEmpty()) {
+						answerInt = Integer.parseInt(answer);
+						house.setStreetnr(answerInt);
+					}
+
+					answer = FormUtil.readString("Square");
+					if (!answer.isEmpty()) {
+						house.setSquare(answer);
+					}
+
+					answer = FormUtil.readString("Floors");
+					if (!answer.isEmpty()) {
+						answerInt = Integer.parseInt(answer);
+						house.setFloors(answerInt);
+					}
+
+					answer = FormUtil.readString("Price");
+					if (!answer.isEmpty()) {
+						house.setPrice(answer);
+					}
+
+					answer = FormUtil.readString("Garden (1/0)");
+					if (!answer.isEmpty()) {
+						answerInt = Integer.parseInt(answer);
+
+						// Check, ob 1 oder 0 eingegeben wurd
+						while (answerInt != 0 && answerInt != 1) {
+							System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
+							answer = FormUtil.readString("Garden (1/0)");
+						}
+						house.setGarden(answerInt);
+					}
+					house.save();
+
+					System.out.println("\n Die Daten wurden erfolgreich geändert! \n City: " + house.getCity()
+							+ "\n Postcode: " + house.getPostcode() + "\n Street: " + house.getStreet()
+							+ "\n Street number: " + house.getStreetnr() + "\n Square: " + house.getSquare()
+							+ "\n Floors: " + house.getFloors() + "\n Price: " + house.getPrice() + "\n Garden: "
+							+ toString(house.getGarden()) + "\n\n");
+				} else {
+					System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut!");
+				}
 			} else {
-				System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen SIe es erneut!");
+				System.out.println("Ihre Eingabe ist falsch! Versuchen SIe es erneut!");
 			}
-
-		} else if (answer.toLowerCase().equals(str2.toLowerCase())) {
-			id = FormUtil.readInt("Bei welchem Haus möchten Sie Änderungen vornehmen? Geben Sie bitte eine ID ein");
-
-			// Check, ob die Haus dem Makler gehört
-			if (Haus.loadOneHouse(id).getAgent() == makler.getId()) {
-				Haus house = new Haus();
-				house = Haus.loadOneHouse(id);
-
-				System.out.println(
-						"Um Ihre Daten zu diesem Haus zu ändern, fügen Sie die notwendigen Daten in folgenden Feldern ein. Wenn Sie ein Feld leer lassen, werden die Daten nicht geändert");
-
-				answer = FormUtil.readString("City");
-				if (!answer.isEmpty()) {
-					house.setCity(answer);
-				}
-
-				answer = FormUtil.readString("Postcode");
-				if (!answer.isEmpty()) {
-					answerInt = Integer.parseInt(answer);
-					house.setPostcode(answerInt);
-				}
-
-				answer = FormUtil.readString("Street");
-				if (!answer.isEmpty()) {
-					house.setStreet(answer);
-				}
-
-				answer = FormUtil.readString("Street number");
-				if (!answer.isEmpty()) {
-					answerInt = Integer.parseInt(answer);
-					house.setStreetnr(answerInt);
-				}
-
-				answer = FormUtil.readString("Square");
-				if (!answer.isEmpty()) {
-					house.setSquare(answer);
-				}
-
-				answer = FormUtil.readString("Floors");
-				if (!answer.isEmpty()) {
-					answerInt = Integer.parseInt(answer);
-					house.setFloors(answerInt);
-				}
-
-				answer = FormUtil.readString("Price");
-				if (!answer.isEmpty()) {
-					house.setPrice(answer);
-				}
-
-				answer = FormUtil.readString("Garden (1/0)");
-				if (!answer.isEmpty()) {
-					answerInt = Integer.parseInt(answer);
-
-					// Check, ob 1 oder 0 eingegeben wurd
-					while (answerInt != 0 && answerInt != 1) {
-						System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
-						answer = FormUtil.readString("Garden (1/0)");
-					}
-					house.setGarden(answerInt);
-				}
-				house.save();
-
-				System.out.println("\n Die Daten wurden erfolgreich geändert! \n City: " + house.getCity()
-						+ "\n Postcode: " + house.getPostcode() + "\n Street: " + house.getStreet()
-						+ "\n Street number: " + house.getStreetnr() + "\n Square: " + house.getSquare() + "\n Floors: "
-						+ house.getFloors() + "\n Price: " + house.getPrice() + "\n Garden: "
-						+ toString(house.getGarden()) + "\n\n");
-			} else {
-				System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut!");
-			}
-		} else {
-			System.out.println("Ihre Eingabe ist falsch! Versuchen SIe es erneut!");
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
 		}
 
 	}
