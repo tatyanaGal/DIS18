@@ -403,12 +403,33 @@ public class Main {
 				}
 				tenancy.setApartment_ID(id);
 
-				datumContract = Date.valueOf(FormUtil.readString("Date (YYYY-MM-DD)"));
+				answer = FormUtil.readString("Date (YYYY-MM-DD)");
+				// CHeck, ob die EIngabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("Date (YYYY-MM-DD)");
+				}
+				datumContract = Date.valueOf(answer);
 				tenancy.setDate(datumContract);
-				tenancy.setPlace(FormUtil.readString("Place"));
+
+				answer = FormUtil.readString("Place");
+				// CHeck, ob die EIngabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("Place");
+				}
+				tenancy.setPlace(answer);
 
 				// Check, ob das Vertragsdatum später als Startdatum ist
 				datumStart = Date.valueOf(FormUtil.readString("Start date (YYYY-MM-DD)"));
+
+				answer = FormUtil.readString("Start date (YYYY-MM-DD)");
+				// CHeck, ob die EIngabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("Start date (YYYY-MM-DD)");
+				}
+				datumStart = Date.valueOf(answer);
 
 				while (datumContract.after(datumStart)) {
 					System.out.println(
@@ -416,8 +437,22 @@ public class Main {
 					datumStart = Date.valueOf(FormUtil.readString("Start date (YYYY-MM-DD)"));
 				}
 				tenancy.setStartdate(datumStart);
-				tenancy.setDuration(FormUtil.readString("Duration"));
-				tenancy.setAddcosts(FormUtil.readString("Addcosts"));
+
+				answer = FormUtil.readString("Duration");
+				// CHeck, ob die EIngabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("Duration");
+				}
+				tenancy.setDuration(answer);
+
+				answer = FormUtil.readString("Addcosts");
+				// CHeck, ob die EIngabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("Addcosts");
+				}
+				tenancy.setAddcosts(answer);
 
 				// Check, ob die Person existiert
 				id = FormUtil.readInt("Person ID");
@@ -425,8 +460,8 @@ public class Main {
 					System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen SIe es erneut! \n");
 					id = FormUtil.readInt("Person ID");
 				}
-
 				tenancy.setPerson_ID(id);
+
 				tenancy.save();
 
 				System.out.println(
@@ -447,10 +482,31 @@ public class Main {
 				}
 				purchase.setHouse_ID(id);
 
-				purchase.setDate(Date.valueOf(FormUtil.readString("Date (YYYY-MM-DD)")));
-				purchase.setPlace(FormUtil.readString("Place"));
+				answer = FormUtil.readString("Date (YYYY-MM-DD)");
+				// CHeck, ob die EIngabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("Date (YYYY-MM-DD)");
+				}
+				purchase.setDate(Date.valueOf(answer));
+
+				answer = FormUtil.readString("Place");
+				// CHeck, ob die EIngabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("Place");
+				}
+				purchase.setPlace(answer);
+
 				purchase.setInstallmentsnr(FormUtil.readInt("Installments number"));
-				purchase.setRate(Float.valueOf(FormUtil.readString("Rate (XX,XX)")));
+
+				answer = FormUtil.readString("Rate (XX,XX)");
+				// CHeck, ob die EIngabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("Rate (XX,XX)");
+				}
+				purchase.setRate(Float.valueOf(answer));
 
 				purchase.setHouse_ID(id);
 
@@ -594,7 +650,7 @@ public class Main {
 				if (Wohnung.loadOneApartment(id).getAgent() == makler.getId()) {
 					Wohnung apartment = new Wohnung();
 					apartment = Wohnung.loadOneApartment(id);
-					
+
 					System.out.println(
 							"Um Ihre Daten zu dieser Wohnung zu ändern, fügen Sie die notwendigen Daten in folgenden Feldern ein. Wenn Sie ein Feld leer lassen, werden die Daten nicht geändert");
 
