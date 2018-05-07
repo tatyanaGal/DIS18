@@ -316,7 +316,7 @@ public class Wohnung {
 			if (getId() == -1) {
 				// Achtung, hier wird noch ein Parameter mitgegeben,
 				// damit spaeter generierte IDs zurueckgeliefert werden!
-				String insertSQL = "INSERT INTO APARTMENT(Apartment_City, Apartment_Postcode, Apartment_Street, Apartment_Streetnr, Apartment_Square, Floor, Rent, Rooms, Balcony, Kitchen, Agent_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				String insertSQL = "INSERT INTO Apartment(Apartment_City, Apartment_Postcode, Apartment_Street, Apartment_Streetnr, Apartment_Square, Floor, Rent, Rooms, Balcony, Kitchen, Agent_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 				PreparedStatement pstmt = con.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);
 
@@ -344,7 +344,7 @@ public class Wohnung {
 				pstmt.close();
 			} else {
 				// Falls schon eine ID vorhanden ist, mache ein Update...
-				String updateSQL = "UPDATE HOUSE SET Apartment_City = ?, Apartment_Postcode = ?, Apartment_Street = ?, Apartment_Streetnr = ?, Apartment_Square = ?, Floor = ?, Rent = ?, Rooms = ?, Balcony = ?, Kitchen = ?, Agent_ID = ? WHERE APARTMENT_ID = ?";
+				String updateSQL = "UPDATE Apartment SET Apartment_City = ?, Apartment_Postcode = ?, Apartment_Street = ?, Apartment_Streetnr = ?, Apartment_Square = ?, Floor = ?, Rent = ?, Rooms = ?, Balcony = ?, Kitchen = ?, Agent_ID = ? WHERE APARTMENT_ID = ?";
 				PreparedStatement pstmt = con.prepareStatement(updateSQL);
 
 				// Setze Anfrage Parameter

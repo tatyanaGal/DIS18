@@ -597,6 +597,7 @@ public class Main {
 				if (Wohnung.loadOneApartment(id).getAgent() == makler.getId()) {
 					Wohnung apartment = new Wohnung();
 					apartment = Wohnung.loadOneApartment(id);
+					
 					System.out.println(
 							"Um Ihre Daten zu dieser Wohnung zu ändern, fügen Sie die notwendigen Daten in folgenden Feldern ein. Wenn Sie ein Feld leer lassen, werden die Daten nicht geändert");
 
@@ -743,7 +744,7 @@ public class Main {
 					System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut!");
 				}
 			} else {
-				System.out.println("Ihre Eingabe ist falsch! Versuchen SIe es erneut!");
+				System.out.println("Ihre Eingabe ist falsch! Versuchen Sie es erneut!");
 			}
 		} catch (NullPointerException e) {
 			// e.printStackTrace();
