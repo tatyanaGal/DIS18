@@ -257,7 +257,6 @@ public class Main {
 				return;
 			}
 		}
-
 	}
 
 	/**
@@ -316,7 +315,7 @@ public class Main {
 				System.out.println("Die von Ihnen eingegebene ID ist ungültig!");
 			}
 		} catch (NullPointerException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
 		}
 	}
@@ -476,7 +475,7 @@ public class Main {
 				System.out.println("Ihre Eingabe war falsch! Versuchen Sie es erneut!");
 			}
 		} catch (NullPointerException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
 		}
 	}
@@ -565,7 +564,7 @@ public class Main {
 				System.out.println("Bitte geben Sie entweder 'Haus' oder 'Wohnung' ein!");
 			}
 		} catch (NullPointerException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
 		}
 	}
@@ -754,7 +753,7 @@ public class Main {
 				System.out.println("Ihre Eingabe ist falsch! Versuchen SIe es erneut!");
 			}
 		} catch (NullPointerException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
 		}
 
@@ -910,7 +909,7 @@ public class Main {
 				System.out.println("Die Eingabe war falsch! Bitte versuchen Sie es erneut!");
 			}
 		} catch (NullPointerException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
 		}
 	}
@@ -1042,7 +1041,7 @@ public class Main {
 			showMaklerVerwaltungMenu(makler);
 
 		} catch (NullPointerException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			System.out.println("Das Passwort und das Login sind nicht korrekt! Versuchen Sie erneut!");
 		}
 	}
