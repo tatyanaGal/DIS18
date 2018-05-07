@@ -503,11 +503,7 @@ public class Main {
 
 				answer = FormUtil.readString("Rate (XX.XX)");
 				// CHeck, ob die Eingabe leer ist
-				while (answer.isEmpty()) {
-					System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
-					answer = FormUtil.readString("Rate (XX,XX)");
-				}
-				while (Float.valueOf(answer)>=100 || Float.valueOf(answer)<0) {
+				while (answer.isEmpty() || Float.valueOf(answer)>=100 || Float.valueOf(answer)<0) {
 					System.out.println("Der Zinssatz muss zwischen 0 und 100 liegen! Bitte versuchen Sie es erneut!");
 					answer = FormUtil.readString("Rate (XX,XX)");
 				}
@@ -1116,13 +1112,8 @@ public class Main {
 
 		answer = FormUtil.readString("Login");
 		// Check, ob die Eingabe leer ist
-		while (answer.isEmpty()) {
-			System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
-			answer = FormUtil.readString("Login");
-		}
-		// CHeck, ob login schon verwendet wird
-		while (Makler.loadWithLog(answer) != null) {
-			System.out.println("Das Login wird bereits benutzt! Bitte versuchen Sie es erneut!");
+		while (answer.isEmpty() || Makler.loadWithLog(answer) != null) {
+			System.out.println("Die Eingabe kann nicht leer sein oder das Login wird bereits benutzt! Bitte versuchen Sie es erneut!");
 			answer = FormUtil.readString("Login");
 		}
 		m.setLogin(answer);
