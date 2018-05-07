@@ -396,8 +396,10 @@ public class Main {
 				id = FormUtil
 						.readInt("Für welche Wohnung möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
 
-				while (Wohnung.loadOneApartment(id).getAgent() != makler.getId()) {
-					System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut! \n");
+				while (Wohnung.loadOneApartment(id).getAgent() != makler.getId()
+						|| Mietvertrag.loadOneContract(id) != null) {
+					System.out.println(
+							"Die von Ihnen eingegebene ID ist ungültig oder es gibt bereits ein Vertrag für diese Wohnung! Versuchen Sie es erneut! \n");
 					id = FormUtil.readInt(
 							"Für welche Wohnung möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
 				}
@@ -475,8 +477,9 @@ public class Main {
 				id = FormUtil
 						.readInt("Für welches Haus möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
 
-				while (Haus.loadOneHouse(id).getAgent() != makler.getId()) {
-					System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut! \n");
+				while (Haus.loadOneHouse(id).getAgent() != makler.getId() || Kaufvertrag.loadOneContract(id) != null) {
+					System.out.println(
+							"Die von Ihnen eingegebene ID ist ungültig  oder es gibt bereits ein Vertrag für dieses Haus! Versuchen Sie es erneut! \n");
 					id = FormUtil.readInt(
 							"Für welches Haus möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
 				}
@@ -530,10 +533,9 @@ public class Main {
 		} catch (NullPointerException e) {
 			// e.printStackTrace();
 			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
-		}
-		catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			System.out.println("Die Eingabe liegt in falscher Format vor! Bitte versuchen Sie es erneut!");
-			
+
 		}
 	}
 
@@ -831,7 +833,7 @@ public class Main {
 				answer = FormUtil.readString("City");
 				// Check, ob die Eingabe leer ist
 				while (answer.isEmpty()) {
-					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
 					answer = FormUtil.readString("City");
 				}
 				apartment.setCity(answer);
@@ -841,7 +843,7 @@ public class Main {
 				answer = FormUtil.readString("Street");
 				// Check, ob die Eingabe leer ist
 				while (answer.isEmpty()) {
-					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
 					answer = FormUtil.readString("Street");
 				}
 				apartment.setStreet(answer);
@@ -851,7 +853,7 @@ public class Main {
 				answer = FormUtil.readString("Square");
 				// Check, ob die Eingabe leer ist
 				while (answer.isEmpty()) {
-					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
 					answer = FormUtil.readString("Square");
 				}
 				apartment.setSquare(answer);
@@ -861,7 +863,7 @@ public class Main {
 				answer = FormUtil.readString("Rent");
 				// Check, ob die Eingabe leer ist
 				while (answer.isEmpty()) {
-					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
 					answer = FormUtil.readString("Rent");
 				}
 				apartment.setRent(answer);
@@ -899,7 +901,7 @@ public class Main {
 				answer = FormUtil.readString("City");
 				// Check, ob die Eingabe leer ist
 				while (answer.isEmpty()) {
-					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
 					answer = FormUtil.readString("City");
 				}
 				house.setCity(answer);
@@ -909,7 +911,7 @@ public class Main {
 				answer = FormUtil.readString("Street");
 				// Check, ob die Eingabe leer ist
 				while (answer.isEmpty()) {
-					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
 					answer = FormUtil.readString("Street");
 				}
 				house.setStreet(answer);
@@ -919,7 +921,7 @@ public class Main {
 				answer = FormUtil.readString("Square");
 				// Check, ob die Eingabe leer ist
 				while (answer.isEmpty()) {
-					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
 					answer = FormUtil.readString("Square");
 				}
 				house.setSquare(answer);
@@ -929,7 +931,7 @@ public class Main {
 				answer = FormUtil.readString("Price");
 				// Check, ob die Eingabe leer ist
 				while (answer.isEmpty()) {
-					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
 					answer = FormUtil.readString("Price");
 				}
 				house.setPrice(answer);

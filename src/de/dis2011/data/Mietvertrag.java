@@ -102,6 +102,50 @@ public class Mietvertrag {
 	}
 
 	/**
+	 * Lädt ein Vertrag aus der Datenbank anhand der Wohnung ID.
+	 * 
+	 * @param id
+	 *            Wohnung_ID
+	 * @return eine Wohnung
+	 */
+	public static Mietvertrag loadOneContract(int id) {
+		try {
+			// Hole Verbindung
+			Connection con = DB2ConnectionManager.getInstance().getConnection();
+
+			// Erzeuge Anfrage
+			String selectSQL = "SELECT * FROM Tenancy WHERE APARTMENT_ID = ?";
+			PreparedStatement pstmt = con.prepareStatement(selectSQL);
+			pstmt.setInt(1, id);
+
+			// Führe Anfrage aus
+			ResultSet rs = pstmt.executeQuery();
+
+			// Iteriere über die SQL-Ergebnisse
+			if (rs.next()) {
+				Mietvertrag ts = new Mietvertrag();
+
+				ts.setContractnr(rs.getInt("Tenancy_Contractnr"));
+				ts.setDate(rs.getDate("Tenancy_Date"));
+				ts.setPlace(rs.getString("Tenancy_Place"));
+				ts.setStartdate(rs.getDate("Start"));
+				ts.setDuration(rs.getString("Duration"));
+				ts.setAddcosts(rs.getString("Addcosts"));
+				ts.setApartment_ID(id);
+				ts.setPerson_ID(rs.getInt("Person_ID"));
+
+				rs.close();
+				pstmt.close();
+				return ts;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
 	 * Lädt eine Liste mit allen Mietverträgen aus der Datenbank, die ein bestimmter
 	 * Makler abgeschlossen hat.
 	 * 

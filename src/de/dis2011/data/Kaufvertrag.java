@@ -107,6 +107,49 @@ public class Kaufvertrag {
 	public void setPerson_ID(int person_ID) {
 		this.person_ID = person_ID;
 	}
+	
+	/**
+	 * Lädt ein Vertrag aus der Datenbank anhand der Wohnung ID.
+	 * 
+	 * @param id
+	 *            Wohnung_ID
+	 * @return eine Wohnung
+	 */
+	public static Kaufvertrag loadOneContract(int id) {
+		try {
+			// Hole Verbindung
+			Connection con = DB2ConnectionManager.getInstance().getConnection();
+
+			// Erzeuge Anfrage
+			String selectSQL = "SELECT * FROM Purchase WHERE House_ID = ?";
+			PreparedStatement pstmt = con.prepareStatement(selectSQL);
+			pstmt.setInt(1, id);
+
+			// Führe Anfrage aus
+			ResultSet rs = pstmt.executeQuery();
+
+			// Iteriere über die SQL-Ergebnisse
+			if (rs.next()) {
+				Kaufvertrag ts = new Kaufvertrag();
+
+				ts.setContractnr(rs.getInt("Purchase_Contractnr"));
+				ts.setDate(rs.getDate("Purchase_Date"));
+				ts.setPlace(rs.getString("Purchase_Place"));
+				ts.setInstallmentsnr(rs.getInt("Installmentsnr"));
+				ts.setRate(rs.getFloat("Rate"));
+				ts.setHouse_ID(id);
+				ts.setPerson_ID(rs.getInt("Person_ID"));
+
+				rs.close();
+				pstmt.close();
+				return ts;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	/**
 	 * Lädt eine Liste mit allen Kaufverträgen aus der Datenbank, die ein bestimmter
