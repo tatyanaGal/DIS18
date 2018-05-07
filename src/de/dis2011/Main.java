@@ -137,7 +137,7 @@ public class Main {
 		System.out.println("Hier sind Ihre persönliche Daten aufgelistet: \n Name: " + makler.getName() + "\n Adresse: "
 				+ makler.getAddress() + "\n Login: " + makler.getLogin() + "\n Passwort: " + makler.getPassword()
 				+ "\n\n");
-		
+
 		// Makleraccountverwaltungsmenü
 		Menu maklerMenu = new Menu("Makler-Account/Persönliche Daten");
 		maklerMenu.addEntry("Persönliche Daten ändern", DATA);
@@ -325,7 +325,6 @@ public class Main {
 		Person person = new Person();
 		String answer;
 
-		
 		answer = FormUtil.readString("Firstname");
 		// Check, ob die Eingabe leer ist
 		while (answer.isEmpty()) {
@@ -333,7 +332,7 @@ public class Main {
 			answer = FormUtil.readString("Firstname");
 		}
 		person.setFirstname(answer);
-		
+
 		answer = FormUtil.readString("Lastname");
 		// Check, ob die Eingabe leer ist
 		while (answer.isEmpty()) {
@@ -341,7 +340,7 @@ public class Main {
 			answer = FormUtil.readString("Lastname");
 		}
 		person.setLastname(answer);
-		
+
 		answer = FormUtil.readString("Adresse");
 		// Check, ob die Eingabe leer ist
 		while (answer.isEmpty()) {
@@ -349,7 +348,7 @@ public class Main {
 			answer = FormUtil.readString("Adresse");
 		}
 		person.setAddress(answer);
-		
+
 		person.save();
 
 		System.out.println("Eine Person mit der ID " + person.getId() + " wurde erfolgreich erstellt!");
@@ -564,14 +563,15 @@ public class Main {
 		Makler makler = m;
 		String answer = "";
 		int answerInt = 0;
-		String str = "Wohnung";
+		String str1 = "Wohnung";
+		String str2 = "Haus";
 		int id;
 
 		System.out.println("Hier sind Ihre Immobilien aufgelistet\n");
 		loadEstates(makler);
 
-		if (FormUtil.readString("Wo möchten Sie die Änderungen vornehmen? (Wohnung/Haus)").toLowerCase()
-				.equals(str.toLowerCase())) {
+		answer = FormUtil.readString("Wo möchten Sie die Änderungen vornehmen? (Wohnung/Haus)");
+		if (answer.toLowerCase().equals(str1.toLowerCase())) {
 
 			id = FormUtil.readInt("Bei welcher Wohnung möchten Sie Änderungen vornehmen? Geben Sie bitte eine ID ein");
 
@@ -598,7 +598,7 @@ public class Main {
 					apartment.setStreet(answer);
 				}
 
-				answer = FormUtil.readString("STreet number");
+				answer = FormUtil.readString("Street number");
 				if (!answer.isEmpty()) {
 					answerInt = Integer.parseInt(answer);
 					apartment.setStreetnr(answerInt);
@@ -661,7 +661,7 @@ public class Main {
 				System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen SIe es erneut!");
 			}
 
-		} else {
+		} else if (answer.toLowerCase().equals(str2.toLowerCase())) {
 			id = FormUtil.readInt("Bei welchem Haus möchten Sie Änderungen vornehmen? Geben Sie bitte eine ID ein");
 
 			// Check, ob die Haus dem Makler gehört
@@ -731,6 +731,8 @@ public class Main {
 			} else {
 				System.out.println("Die von Ihnen eingegebene ID ist ungültig! Versuchen Sie es erneut!");
 			}
+		} else {
+			System.out.println("Ihre Eingabe ist falsch! Versuchen SIe es erneut!");
 		}
 
 	}
@@ -745,141 +747,148 @@ public class Main {
 		String str2 = "Haus";
 		String answer = "";
 		int answerInt = 0;
+		try {
+			answer = FormUtil.readString("Wohnung/Haus?");
+			if (answer.toLowerCase().equals(str1.toLowerCase())) {
 
-		answer = FormUtil.readString("Wohnung/Haus?");
-		if (answer.toLowerCase().equals(str1.toLowerCase())) {
+				Wohnung apartment = new Wohnung();
 
-			Wohnung apartment = new Wohnung();
+				apartment.setAgent(makler.getId());
 
-			apartment.setAgent(makler.getId());
-			
-			answer = FormUtil.readString("City");
-			// Check, ob die Eingabe leer ist
-			while (answer.isEmpty()) {
-				System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
 				answer = FormUtil.readString("City");
-			}
-			apartment.setCity(answer);
-			
-			apartment.setPostcode(FormUtil.readInt("Postcode"));
-			
-			answer = FormUtil.readString("Street");
-			// Check, ob die Eingabe leer ist
-			while (answer.isEmpty()) {
-				System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+				// Check, ob die Eingabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("City");
+				}
+				apartment.setCity(answer);
+
+				apartment.setPostcode(FormUtil.readInt("Postcode"));
+
 				answer = FormUtil.readString("Street");
-			}
-			apartment.setStreet(answer);
-			
-			apartment.setStreetnr(FormUtil.readInt("Street Number"));
-			
-			answer = FormUtil.readString("Square");
-			// Check, ob die Eingabe leer ist
-			while (answer.isEmpty()) {
-				System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+				// Check, ob die Eingabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("Street");
+				}
+				apartment.setStreet(answer);
+
+				apartment.setStreetnr(FormUtil.readInt("Street Number"));
+
 				answer = FormUtil.readString("Square");
-			}
-			apartment.setSquare(answer);
-			
-			apartment.setFloor(FormUtil.readInt("Floor number"));
-			
-			answer = FormUtil.readString("Rent");
-			// Check, ob die Eingabe leer ist
-			while (answer.isEmpty()) {
-				System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+				// Check, ob die Eingabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("Square");
+				}
+				apartment.setSquare(answer);
+
+				apartment.setFloor(FormUtil.readInt("Floor number"));
+
 				answer = FormUtil.readString("Rent");
-			}
-			apartment.setRent(answer);
-			
-			apartment.setRooms(FormUtil.readInt("Rooms"));
-
-			answer = FormUtil.readString("Balcony (1/0). Wenn Sie nichts eingeben, wird als Default eine 0 übernommen");
-			if (!answer.isEmpty()) {
-				answerInt = Integer.parseInt(answer);
-
-				// Check, ob 1 oder 0 eingegeben wurd
-				while (answerInt != 0 && answerInt != 1) {
-					System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
-					answer = FormUtil.readString("Balcony (1/0)");
+				// Check, ob die Eingabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("Rent");
 				}
-				apartment.setBalcony(answerInt);
-			}
+				apartment.setRent(answer);
 
-			answer = FormUtil.readString("Kitchen (1/0). Wenn Sie nichts eingeben, wird als Default eine 0 übernommen");
-			if (!answer.isEmpty()) {
-				answerInt = Integer.parseInt(answer);
+				apartment.setRooms(FormUtil.readInt("Rooms"));
 
-				// Check, ob 1 oder 0 eingegeben wurd
-				while (answerInt != 0 && answerInt != 1) {
-					System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
-					answer = FormUtil.readString("Kitchen (1/0)");
+				answer = FormUtil
+						.readString("Balcony (1/0). Wenn Sie nichts eingeben, wird als Default eine 0 übernommen");
+				if (!answer.isEmpty()) {
+					answerInt = Integer.parseInt(answer);
+
+					// Check, ob 1 oder 0 eingegeben wurd
+					while (answerInt != 0 && answerInt != 1) {
+						System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
+						answer = FormUtil.readString("Balcony (1/0)");
+					}
+					apartment.setBalcony(answerInt);
 				}
-				apartment.setKitchen(answerInt);
-			}
-			apartment.save();
 
-			System.out.println("Eine Wohnung mit der ID " + apartment.getId() + " wurde erfolgreich erstellt!");
+				answer = FormUtil
+						.readString("Kitchen (1/0). Wenn Sie nichts eingeben, wird als Default eine 0 übernommen");
+				if (!answer.isEmpty()) {
+					answerInt = Integer.parseInt(answer);
 
-		} else if (answer.toLowerCase().equals(str2.toLowerCase())) {
+					// Check, ob 1 oder 0 eingegeben wurd
+					while (answerInt != 0 && answerInt != 1) {
+						System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
+						answer = FormUtil.readString("Kitchen (1/0)");
+					}
+					apartment.setKitchen(answerInt);
+				}
+				apartment.save();
 
-			Haus house = new Haus();
+				System.out.println("Eine Wohnung mit der ID " + apartment.getId() + " wurde erfolgreich erstellt!");
 
-			house.setAgent(makler.getId());
-			
-			answer = FormUtil.readString("City");
-			// Check, ob die Eingabe leer ist
-			while (answer.isEmpty()) {
-				System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+			} else if (answer.toLowerCase().equals(str2.toLowerCase())) {
+
+				Haus house = new Haus();
+
+				house.setAgent(makler.getId());
+
 				answer = FormUtil.readString("City");
-			}
-			house.setCity(answer);
-			
-			house.setPostcode(FormUtil.readInt("Postcode"));
-			
-			answer = FormUtil.readString("Street");
-			// Check, ob die Eingabe leer ist
-			while (answer.isEmpty()) {
-				System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
-				answer = FormUtil.readString("Street");
-			}
-			house.setStreet(answer);
-			
-			house.setStreetnr(FormUtil.readInt("Street Number"));
-			
-			answer = FormUtil.readString("Square");
-			// Check, ob die Eingabe leer ist
-			while (answer.isEmpty()) {
-				System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
-				answer = FormUtil.readString("Square");
-			}
-			house.setSquare(answer);
-			
-			house.setFloors(FormUtil.readInt("Floors"));
-			
-			answer = FormUtil.readString("Price");
-			// Check, ob die Eingabe leer ist
-			while (answer.isEmpty()) {
-				System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
-				answer = FormUtil.readString("Price");
-			}
-			house.setPrice(answer);
-
-			answer = FormUtil.readString("Garden (1/0). Wenn Sie nichts eingeben, wird als Default eine 0 übernommen");
-			if (!answer.isEmpty()) {
-				answerInt = Integer.parseInt(answer);
-
-				// Check, ob 1 oder 0 eingegeben wurd
-				while (answerInt != 0 && answerInt != 1) {
-					System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
-					answer = FormUtil.readString("Garden (1/0)");
+				// Check, ob die Eingabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("City");
 				}
-				house.setGarden(answerInt);
-			}
-			house.save();
+				house.setCity(answer);
 
-			System.out.println("Ein Haus mit der ID " + house.getId() + " wurde erfolgreich erstellt!");
-		} else {
-			System.out.println("Die Eingabe war falsch! Bitte versuchen Sie es erneut!");
+				house.setPostcode(FormUtil.readInt("Postcode"));
+
+				answer = FormUtil.readString("Street");
+				// Check, ob die Eingabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("Street");
+				}
+				house.setStreet(answer);
+
+				house.setStreetnr(FormUtil.readInt("Street Number"));
+
+				answer = FormUtil.readString("Square");
+				// Check, ob die Eingabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("Square");
+				}
+				house.setSquare(answer);
+
+				house.setFloors(FormUtil.readInt("Floors"));
+
+				answer = FormUtil.readString("Price");
+				// Check, ob die Eingabe leer ist
+				while (answer.isEmpty()) {
+					System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+					answer = FormUtil.readString("Price");
+				}
+				house.setPrice(answer);
+
+				answer = FormUtil
+						.readString("Garden (1/0). Wenn Sie nichts eingeben, wird als Default eine 0 übernommen");
+				if (!answer.isEmpty()) {
+					answerInt = Integer.parseInt(answer);
+
+					// Check, ob 1 oder 0 eingegeben wurd
+					while (answerInt != 0 && answerInt != 1) {
+						System.out.println("Die Eingabe kann entweder 0 oder 1 sein! Versuchen Sie es erneut!");
+						answer = FormUtil.readString("Garden (1/0)");
+					}
+					house.setGarden(answerInt);
+				}
+				house.save();
+
+				System.out.println("Ein Haus mit der ID " + house.getId() + " wurde erfolgreich erstellt!");
+			} else {
+				System.out.println("Die Eingabe war falsch! Bitte versuchen Sie es erneut!");
+			}
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			System.out.println("Die eingegebene ID existiert nicht! Bitte versuchen Sie es erneuet!");
 		}
 	}
 
@@ -1026,38 +1035,37 @@ public class Main {
 		answer = FormUtil.readString("Name");
 		// Check, ob die Eingabe leer ist
 		while (answer.isEmpty()) {
-			System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+			System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
 			answer = FormUtil.readString("Name");
 		}
 		m.setName(answer);
-		
-	
+
 		answer = FormUtil.readString("Adresse");
 		// Check, ob die Eingabe leer ist
 		while (answer.isEmpty()) {
-			System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+			System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
 			answer = FormUtil.readString("Adresse");
 		}
 		m.setAddress(answer);
-		
+
 		answer = FormUtil.readString("Login");
 		// Check, ob die Eingabe leer ist
 		while (answer.isEmpty()) {
-			System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+			System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
 			answer = FormUtil.readString("Login");
 		}
 		m.setLogin(answer);
-		
+
 		answer = FormUtil.readString("Passwort");
 		// Check, ob die Eingabe leer ist
 		while (answer.isEmpty()) {
-			System.out.println("Die Eingabe kann nicht leer sein! Bitte vresuchen Sie es erneut!");
+			System.out.println("Die Eingabe kann nicht leer sein! Bitte versuchen Sie es erneut!");
 			answer = FormUtil.readString("Passwort");
 		}
 		m.setPassword(answer);
-		
+
 		m.save();
 
-		System.out.println("Makler mit der ID " + m.getId() + " wurde erzeugt.");
+		System.out.println("Makler mit der ID " + m.getId() + " wurde erzeugt. \n");
 	}
 }
