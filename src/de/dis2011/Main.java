@@ -372,6 +372,7 @@ public class Main {
 		Date datumContract;
 		Date datumStart;
 		Mietvertrag tenancy = new Mietvertrag();
+		Kaufvertrag purchase = new Kaufvertrag();
 
 		System.out.println("Hier sind Ihre Immobilien aufgelistet:");
 		loadEstates(makler);
@@ -433,10 +434,6 @@ public class Main {
 				// showMainMenu();
 				// TODO
 			} else if (answer.toLowerCase().equals(str2.toLowerCase())) {
-
-				id = FormUtil
-						.readInt("Für welches Haus möchten Sie einen Vertrag erstellen? Geben Sie bitte eine ID ein");
-				Kaufvertrag purchase = new Kaufvertrag();
 
 				// Check, ob das Haus dem Makler gehört
 
